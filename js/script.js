@@ -19,8 +19,8 @@ $(document).ready(function () {
                     email,
                     location
                 } = randomUsers.results[i];
-                const userHTML = $(`<div class="card" usernumber="${i}">
-                         <div class="card-img-container">
+                const userHTML = $(`<div id="usercard" class="card" usernumber="${i}">
+                         <div class="card-img-container" class="zoom">
                              <img class="card-img" src="${picture.thumbnail}" alt="profile picture">
                          </div>
                          <div class="card-info-container">
@@ -38,7 +38,7 @@ $(document).ready(function () {
     xhr.send();
 
     /**
-     * Click on user card causes modal to appear with addtn'l user info.
+     * Click on user card causes modal to appear with addtn'l user info dynamically appended.
      * Modal is closed when the 'x' button or overlay is clicked.
      */
     function showModal(e) {
@@ -46,7 +46,6 @@ $(document).ready(function () {
         const userNumber = parseInt(card.attr('usernumber'));
         const user = randomUsers.results[userNumber];
         console.log(user);
-        //Destructurting trick again...
         const {
             picture,
             name,
@@ -60,16 +59,16 @@ $(document).ready(function () {
         const modal = `<div class="modal-container">
                 <div class="modal" usernumber="${userNumber}">
                     <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
-                    <div class="modal-info-container">
-                        <img class="modal-img" src="${picture.thumbnail}" alt="profile picture">
+                    <div id="userinfo" class="modal-info-container">
+                        <img id="picture" class="modal-img" src="${picture.thumbnail}" alt="profile picture">
                         <h3 id="name" class="modal-name cap">${name.first} ${name.last}</h3>
-                        <p class="modal-text">${email}</p>
-                        <p class="modal-text cap">${location.street}, ${location.city}, ${location.state} 
+                        <p id="email" class="modal-text">${email}</p>
+                        <p id="location" class="modal-text cap">${location.street}, ${location.city}, ${location.state} 
                         ${location.zip !== undefined ? location.zip : ""}</p>
                         <hr>
-                        <p class="modal-text">Phone: ${phone}</p>
-                        <p class="modal-text">Cell: ${cell}</p>
-                        <p class="modal-text">Birthday: ${date.getMonth()+1}/${date.getDay()}/${date.getFullYear()}</p>
+                        <p id="phone" class="modal-text">Phone: ${phone}</p>
+                        <p id="cell" class="modal-text">Cell: ${cell !== undefined ? cell : ""}</p>
+                        <p id="birthday" class="modal-text">Birthday: ${date.getMonth()+1}/${date.getDay()}/${date.getFullYear()}</p>
                     </div>
                 </div>
                 <div class="modal-btn-container">
@@ -79,74 +78,45 @@ $(document).ready(function () {
                 </div>`;
         $('body').append(modal);
 
-        //Allows users to close the modal by clicking the 'x' button. 
+        /**
+         * Allows users to close the modal by clicking the 'x' button. 
+         */
         $('#modal-close-btn').on('click', () => {
             $('.modal-container').remove();
         });
-
-        //Allows users to close the modal by clicking the overlay.
-        // $.modal.defaults = {
-        //     clickClose = true,
-        // }
-
-        //Setting up the prev and next buttons for extra credit.
-        // $('#modal-prev').on('click', prevResult);
-        $('#modal-next').on('click', nextResult);
     }
 
-    //EXTRA CREDIT
-    function nextResult() {
-        const userNumber = (parseInt($(".modal").attr('usernumber')) + 1) % 12;
-        const user = randomUsers.results[userNumber]; //gets us the array result for the user clicked.
-        const {
-            picture,
-            name,
-            email,
-            location,
-            phone,
-            cell,
-            dob
-        } = user; //destructuring assignment
-        const date = new Date(dob.date);
-        console.log(user);
-        console.log(picture);
-        console.log(name);
-        console.log(email);
-        console.log(location);
-        console.log(phone);
-        console.log(cell);
-        console.log(dob);
-
-        $('.modal-info-container > img').attr('src', picture.thumbnail);
-        // $("#name").attr('src', name.first, name.last); //name
-        // $('p.modal-text:eq(2)').attr(email);//email
-        // $('.modal-text cap').attr(location.street, location.city, location.state, location.zip); //location
-        // $('p.modal-text:contains(Phone:').attr(phone);//phone
-        // $('p.modal-text:contains(Cell:)').attr(cell); //cell
-        // $('p.modal-text:contains(Birthday:').attr(dob.date);//dob
-
-    }
-
-    //     function prevResult() {
-    //         const userNumber = (parseInt($(".modal").attr('usernumber')) - 1) % 12;
-    //         const user = randomUsers.results[userNumber]; //gets us the array result for the user clicked.
-    //         const {
-    //             picture,
-    //             name,
-    //             email,
-    //             location,
-    //             phone,
-    //             cell,
-    //             dob
-    //         } = user; //destructuring assignment
-    //         const date = new Date(dob.date);
-    //         $(".modal-info-container > img").attr('src', picture.thumbnail);
-    //     }
-    //     }
-
+    /**
+     * Search bar is just for aesthetics; not functional.
+     */
     const searchBar = `<form action="#" method="get">
-         <input type="search" id="search-input" class="search-input" placeholder="Search...">
-         <input type="submit" value="&#x1F50D;" id="sear ch-submit" class="search-submit">
-         </form>`;
+            <input type="search" id="search-input" class="search-input" placeholder="Search...">
+            <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
+            </form>`;
     $('.search-container').append(searchBar);
+
+    function searchFunction() {
+        var input, filter, div, h3;
+        input = document.getElementById('search-input'); //what user is typing
+        filter = input.value.toUpperCase();
+        div = document.getElementById('usercard'); //user card
+        h3 = div.getElementByTagName('h3').val(); //user name
+
+        for (i = 0; i < li.length; i++) {
+            if (h3.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                if (input === h3) {
+                    div[i].style.display = "";
+                } else {
+                    div[i].style.display = 'none';
+                }
+            }
+        }
+    }
+    searchFunction();
+    // $("#myInput").on("keyup", function () {
+    //     var value = $(this).val().toLowerCase();
+    //     $("#myTable tr").filter(function () {
+    //         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    //     });
+    // });
 });

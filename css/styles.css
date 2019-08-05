@@ -5,10 +5,11 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 
 * {
-	box-sizing: border-box;
+    box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
     width: 100%;
     max-width: 100%;
 }
@@ -16,7 +17,7 @@ html, body {
 body {
     font-family: "Nunito", sans-serif;
     text-align: center;
-    background: rgba(235, 235, 235, 0.9);
+    background: rgba(250, 209, 142, 0.9);
 }
 
 header {
@@ -29,7 +30,7 @@ header {
 }
 
 header h1 {
-    font-size: 1.25em;
+    font-size: 1.75em;
     color: rgba(50, 50, 50, 0.9);
     margin-top: 35px;
 }
@@ -37,13 +38,15 @@ header h1 {
 .search-input {
     padding: 0.4rem 1rem;
     border: 1px solid rgba(200, 200, 200, 0.9);
-    border-radius: 0.25rem 0 0 0.25rem ;
+    border-radius: 0.25rem 0 0 0.25rem;
     max-width: 20rem;
     transition: .4s ease-out;
     outline: none;
 }
 
-.search-input:active, .search-input:hover, .search-input:focus {
+.search-input:active,
+.search-input:hover,
+.search-input:focus {
     border: 1px solid rgba(50, 50, 50, 0.9);
 }
 
@@ -57,7 +60,9 @@ header h1 {
     outline: none;
 }
 
-.search-submit:active, .search-submit:hover, .search-submit:focus {
+.search-submit:active,
+.search-submit:hover,
+.search-submit:focus {
     background: rgba(255, 255, 255, 0.9);
     border: 1px solid rgba(50, 50, 50, 0.9);
 }
@@ -76,7 +81,7 @@ header h1 {
     max-width: 1200px;
     margin: auto;
 }
-  
+
 .card {
     display: flex;
     flex-direction: row;
@@ -87,7 +92,7 @@ header h1 {
     max-width: 360px;
     margin: 10px 10px 20px;
     padding: 10px;
-    background: rgba(245, 245, 245, 0.9);
+    background: rgba(179, 193, 255, 0.9);
     border-radius: 0.25em;
     border: 1px solid rgba(50, 50, 50, 0.3);
     transition: .4s ease-out;
@@ -99,7 +104,7 @@ header h1 {
     margin: 10px 15px auto 10px;
     border-radius: 50%;
 }
-  
+
 .card-info-container {
     text-align: left;
 }
@@ -119,6 +124,20 @@ header h1 {
     text-transform: capitalize;
 }
 
+.zoom {
+    padding: 50px;
+    background-color: green;
+    transition: transform .2s;
+    /* Animation */
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+}
+
+.zoom:hover {
+    transform: scale(1.5);
+    /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
 
 /* ===================================== 
    Modal
@@ -186,7 +205,8 @@ header h1 {
     justify-content: space-evenly;
     width: 95%;
     max-width: 420px;
-    padding: 10px 15px 15px;;
+    padding: 10px 15px 15px;
+    ;
     margin: 10px auto auto;
     background: rgba(255, 255, 255, 1);
     border-radius: 0.25em;
@@ -206,7 +226,7 @@ header h1 {
     transition: .4s ease-out;
     outline: none;
 }
-  
+
 
 /* ===================================== 
    Media Queries
@@ -253,11 +273,11 @@ header h1 {
     }
 
     .card:hover .card-text {
-        color: rgba(25, 25, 25, 1); 
+        color: rgba(25, 25, 25, 1);
     }
 
     .btn:hover {
         background: rgba(255, 255, 255, 1);
-        color: rgba(25, 25, 25, 1); 
+        color: rgba(25, 25, 25, 1);
     }
 }
