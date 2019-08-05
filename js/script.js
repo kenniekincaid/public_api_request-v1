@@ -1,20 +1,24 @@
 $(document).ready(function () {
-
-    //Created a XMLHttp Request object and callback function, then opened and sent a request
-    //appends user cards while looping through array
-    let randomUsers;
+    /**
+     * Request, retrieve, parse, and append random user data to HTML
+     * if ready state and status conditions are met. Then, show modal
+     * when the cards are clicked.
+     */
+    let randomUsers; //Global variable for later usage.
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
-            randomUsers = JSON.parse(xhr.responseText); //RESULTS is the array, not randomUsers
+            randomUsers = JSON.parse(xhr.responseText);
             const cardArray = [];
             for (var i = 0; i < randomUsers.results.length; i++) {
+                /**Learned an advanced destructing assignment trick to avoid repetition
+                 * via https://dev.to/sarah_chima/destructuring-assignment---arrays-16f*/
                 const {
                     picture,
                     name,
                     email,
                     location
-                } = randomUsers.results[i]; //destructuring assignment
+                } = randomUsers.results[i];
                 const userHTML = $(`<div class="card" usernumber="${i}">
                          <div class="card-img-container">
                              <img class="card-img" src="${picture.thumbnail}" alt="profile picture">
@@ -33,12 +37,15 @@ $(document).ready(function () {
     xhr.open('GET', 'https://randomuser.me/api/?results=12');
     xhr.send();
 
-    //shows modal when card is clicked. Addtn'l info appended to the modal.
-    // Modal is closed when the 'x' button is clicked.
+    /**
+     * Click on user card causes modal to appear with addtn'l user info.
+     * Modal is closed when the 'x' button or overlay is clicked.
+     */
     function showModal(e) {
         const card = $(e.target).closest('.card');
-        const userNumber = parseInt(card.attr('usernumber')); 
+        const userNumber = parseInt(card.attr('usernumber'));
         const user = randomUsers.results[userNumber];
+        //Destructurting trick again...
         const {
             picture,
             name,
@@ -70,33 +77,62 @@ $(document).ready(function () {
                     </div>
                 </div>`;
         $('body').append(modal);
+
+        //Allows users to close the modal by clicking the 'x' button. 
         $('#modal-close-btn').on('click', () => {
             $('.modal-container').remove();
-        }); 
-        $('#modal-prev').on('click', prevResult);
+        });
+
+        //Allows users to close the modal by clicking the overlay.
+        // $.modal.defaults = {
+        //     clickClose = true,
+        // }
+
+        //Setting up the prev and next buttons for extra credit.
+        // $('#modal-prev').on('click', prevResult);
         $('#modal-next').on('click', nextResult);
     }
 
-//EXTRA CREDIT
-//     function nextResult() {
-//         const userNumber = (parseInt($(".modal").attr('usernumber')) + 1) % 12;
-//         const user = randomUsers.results[userNumber]; //gets us the array result for the user clicked.
-//         const {
-//             picture,
-//             name,
-//             email,
-//             location,
-//             phone,
-//             cell,
-//             dob
-//         } = user; //destructuring assignment
-//         const date = new Date(dob.date);
-//         $(".modal-info-container > img").attr('src', picture.thumbnail);
-//     }
+    //EXTRA CREDIT
+    // function nextResult() {
+    //     const userNumber = (parseInt($(".modal").attr('usernumber')) + 1) % 12;
+    //     const user = randomUsers.results[userNumber]; //gets us the array result for the user clicked.
+    //     const {
+    //         picture,
+    //         name,
+    //         email,
+    //         location,
+    //         phone,
+    //         cell,
+    //         dob
+    //     } = user; //destructuring assignment
+    //     const date = new Date(dob.date);
+    //     $('.modal-info-container > img').attr('src', picture.thumbnail);
+    //     $("#name").attr('src', name.first, name.last); //name
+    //     $('p.modal-text:eq(2)').attr(email);//email
+    //     $('.modal-text cap').attr(location.street, location.city, location.state, location.zip); //location
+    //     $('p.modal-text:contains(Phone:').attr(phone);//phone
+    //     $('p.modal-text:contains(Cell:)').attr(cell); //cell
+    //     $('p.modal-text:contains(Birthday:').attr(dob.date);//dob
 
-//     function prevResult() {
+    // }
 
-//     }
+    //     function prevResult() {
+    //         const userNumber = (parseInt($(".modal").attr('usernumber')) - 1) % 12;
+    //         const user = randomUsers.results[userNumber]; //gets us the array result for the user clicked.
+    //         const {
+    //             picture,
+    //             name,
+    //             email,
+    //             location,
+    //             phone,
+    //             cell,
+    //             dob
+    //         } = user; //destructuring assignment
+    //         const date = new Date(dob.date);
+    //         $(".modal-info-container > img").attr('src', picture.thumbnail);
+    //     }
+    //     }
 
     const searchBar = `<form action="#" method="get">
          <input type="search" id="search-input" class="search-input" placeholder="Search...">
