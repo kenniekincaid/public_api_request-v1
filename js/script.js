@@ -94,29 +94,4 @@ $(document).ready(function () {
             <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
             </form>`;
     $('.search-container').append(searchBar);
-
-    function searchFunction() {
-        var input, filter, div, h3;
-        input = document.getElementById('search-input'); //what user is typing
-        filter = input.value.toUpperCase();
-        div = document.getElementById('usercard'); //user card
-        h3 = div.getElementByTagName('h3').val(); //user name
-
-        for (i = 0; i < li.length; i++) {
-            if (h3.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                if (input === h3) {
-                    div[i].style.display = "";
-                } else {
-                    div[i].style.display = 'none';
-                }
-            }
-        }
-    }
-    searchFunction();
-    // $("#myInput").on("keyup", function () {
-    //     var value = $(this).val().toLowerCase();
-    //     $("#myTable tr").filter(function () {
-    //         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    //     });
-    // });
 });

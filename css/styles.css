@@ -17,7 +17,10 @@ body {
 body {
     font-family: "Nunito", sans-serif;
     text-align: center;
-    background: rgba(250, 209, 142, 0.9);
+    /* background: rgba(0, 0, 0, 0.9); */
+    /* background-image: url('https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/r3NpKei5gizy8iatz/videoblocks-abstract-space-background-geometry-surfaces-lines-and-points-abstract-tunnel-grid-digital-dynamic-wallpaper-technology-background-dynamic-plexus-futuristic-technology-motion-background_sfwopk18g_thumbnail-full01.png'); */
+    background-image: url('https://kabekin.com/uploads/converted/15/04/22/3314038881-Earth_scratches_maps_continents_cartography_2560x1600-1wQ3-1920x1080-MM-100.jpg');
+    background-size: cover;
 }
 
 header {
@@ -31,7 +34,7 @@ header {
 
 header h1 {
     font-size: 1.75em;
-    color: rgba(50, 50, 50, 0.9);
+    color: rgba(255, 233, 182, 0.9);
     margin-top: 35px;
 }
 
@@ -92,7 +95,7 @@ header h1 {
     max-width: 360px;
     margin: 10px 10px 20px;
     padding: 10px;
-    background: rgba(179, 193, 255, 0.9);
+    background: rgb(251, 199, 131);
     border-radius: 0.25em;
     border: 1px solid rgba(50, 50, 50, 0.3);
     transition: .4s ease-out;
@@ -124,21 +127,6 @@ header h1 {
     text-transform: capitalize;
 }
 
-.zoom {
-    padding: 50px;
-    background-color: green;
-    transition: transform .2s;
-    /* Animation */
-    width: 200px;
-    height: 200px;
-    margin: 0 auto;
-}
-
-.zoom:hover {
-    transform: scale(1.5);
-    /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
-}
-
 /* ===================================== 
    Modal
 ======================================== */
@@ -159,7 +147,7 @@ header h1 {
     min-height: 415px;
     margin: 10px auto auto;
     padding-bottom: 15px;
-    background: rgba(255, 255, 255, 1);
+    background: rgba(253, 149, 64, 0.9);
     border-radius: 0.25em;
     border: 1px solid rgba(100, 100, 100, 0.3);
     transition: .4s ease-out;
@@ -208,7 +196,7 @@ header h1 {
     padding: 10px 15px 15px;
     ;
     margin: 10px auto auto;
-    background: rgba(255, 255, 255, 1);
+    background: rgb(0, 0, 0);
     border-radius: 0.25em;
     border: 1px solid rgba(100, 100, 100, 0.3);
 }
@@ -268,7 +256,7 @@ header h1 {
 @media (min-width: 1024px) {
 
     .card:hover {
-        background: rgba(255, 255, 255, 1);
+        background: rgba(253, 149, 64, 0.9);
         border: 1px solid rgba(50, 50, 50, 0.9);
     }
 
