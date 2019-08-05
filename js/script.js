@@ -1,88 +1,106 @@
-$(document).ready(function() {
-const url = "https://randomuser.me/api/?results=12";
-const results = $('#gallery').append(`<div id="results"></div>`);
-let staff = "";
+$(document).ready(function () {
 
-  //fetching random user information and dynamically appending it to the document.
-  function getUserData(url) {
-      fetch(url)
-          .then(response => (response.json())) //convert into json
-          .then(function(data) {
-            // console.log(data);//12 objects received in the console.
-            data.results.forEach(person => {
-                //EMPLOYEE GALLERY(CARDS)
-                staff = `<div class="card">
-                <div class="card-img-container">
-                    <img class="card-img" src="https://placehold.it/90x90" alt="profile picture">
+    //Created a XMLHttp Request object and callback function, then opened and sent a request
+    //appends user cards while looping through array
+    let randomUsers;
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            randomUsers = JSON.parse(xhr.responseText); //RESULTS is the array, not randomUsers
+            const cardArray = [];
+            for (var i = 0; i < randomUsers.results.length; i++) {
+                const {
+                    picture,
+                    name,
+                    email,
+                    location
+                } = randomUsers.results[i]; //destructuring assignment
+                const userHTML = $(`<div class="card" usernumber="${i}">
+                         <div class="card-img-container">
+                             <img class="card-img" src="${picture.thumbnail}" alt="profile picture">
+                         </div>
+                         <div class="card-info-container">
+                             <h3 id="name" class="card-name cap">${name.first} ${name.last}</h3>
+                             <p class="card-text">${email}</p>
+                             <p class="card-text cap">${location.city}, ${location.state}</p>
+                         </div>
+                         </div>`).on('click', showModal);
+                cardArray.push(userHTML);
+            }
+            $('.gallery').append(cardArray);
+        }
+    };
+    xhr.open('GET', 'https://randomuser.me/api/?results=12');
+    xhr.send();
+
+    //shows modal when card is clicked. Addtn'l info appended to the modal.
+    // Modal is closed when the 'x' button is clicked.
+    function showModal(e) {
+        const card = $(e.target).closest('.card');
+        const userNumber = parseInt(card.attr('usernumber')); 
+        const user = randomUsers.results[userNumber];
+        const {
+            picture,
+            name,
+            email,
+            location,
+            phone,
+            cell,
+            dob
+        } = user;
+        const date = new Date(dob.date);
+        const modal = `<div class="modal-container">
+                <div class="modal" usernumber="${userNumber}">
+                    <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+                    <div class="modal-info-container">
+                        <img class="modal-img" src="${picture.thumbnail}" alt="profile picture">
+                        <h3 id="name" class="modal-name cap">${name.first} ${name.last}</h3>
+                        <p class="modal-text">${email}</p>
+                        <p class="modal-text cap">${location.street}, ${location.city}, ${location.state} 
+                        ${location.zip !== undefined ? location.zip : ""}</p>
+                        <hr>
+                        <p class="modal-text">Phone: ${phone}</p>
+                        <p class="modal-text">Cell: ${cell}</p>
+                        <p class="modal-text">Birthday: ${date.getMonth()+1}/${date.getDay()}/${date.getFullYear()}</p>
+                    </div>
                 </div>
-                <div class="card-info-container">
-                    <h3 id="name" class="card-name cap">first last</h3>
-                    <p class="card-text">email</p>
-                    <p class="card-text cap">city, state</p>
-                </div>
+                <div class="modal-btn-container">
+                        <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
+                        <button type="button" id="modal-next" class="modal-next btn">Next</button>
+                    </div>
                 </div>`;
-                $('#gallery').append(staff);
+        $('body').append(modal);
+        $('#modal-close-btn').on('click', () => {
+            $('.modal-container').remove();
+        }); 
+        $('#modal-prev').on('click', prevResult);
+        $('#modal-next').on('click', nextResult);
+    }
 
-
-            });
-          })
-  }
-  getUserData(url);
-});
-
-//SEARCH CONTAINER
-const searchBar = `<form action="#" method="get">
-<input type="search" id="search-input" class="search-input" placeholder="Search...">
-<input type="submit" value="&#x1F50D;" id="serach-submit" class="search-submit">
-</form>'`
-$(".search-container").append(searchBar);
-
-
-//EMPLOYEE MODALS
-const modal = `<div class="modal-container">
-<div class="modal">
-    <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
-    <div class="modal-info-container">
-        <img class="modal-img" src="https://placehold.it/125x125" alt="profile picture">
-        <h3 id="name" class="modal-name cap">name</h3>
-        <p class="modal-text">email</p>
-        <p class="modal-text cap">city</p>
-        <hr>
-        <p class="modal-text">(555) 555-5555</p>
-        <p class="modal-text">123 Portland Ave., Portland, OR 97204</p>
-        <p class="modal-text">Birthday: 10/21/2015</p>
-    </div>
-</div>
-<div class="modal-btn-container">
-                    <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
-                    <button type="button" id="modal-next" class="modal-next btn">Next</button>
-                </div>
-            </div>`
-$('#gallery').append(modal).hide();
-
-
-
-//Receiving CORS error for the code below. Commenting it out to try an alternative method.
-// const url = "https://randomuser.me/api/?results=12";
-// var xhr = new XMLHttpRequest(url);
-// xhr.onreadystatechange = function() {
-//     if(xhr.readyState === 4 && xhr.status === 200) {
-//       var employees = JSON.parse(xhr.responseText);
-      
-//       for(var i=0; i<employees.length; i +=1){
-//         if(employees[i] === true)
-//         statusHTML += `<div class="card">
-//           <div class="card-img-container">
-//               <img class="card-img" src="https://placehold.it/90x90" alt="profile picture">
-//           </div>
-//           <div class="card-info-container">
-//               <h3 id="name" class="card-name cap">${first} ${last}</h3>
-//               <p class="card-text">${email}</p>
-//               <p class="card-text cap">${city, state}</p>
-//           </div>
-//         </div>`;
-//       }
+//EXTRA CREDIT
+//     function nextResult() {
+//         const userNumber = (parseInt($(".modal").attr('usernumber')) + 1) % 12;
+//         const user = randomUsers.results[userNumber]; //gets us the array result for the user clicked.
+//         const {
+//             picture,
+//             name,
+//             email,
+//             location,
+//             phone,
+//             cell,
+//             dob
+//         } = user; //destructuring assignment
+//         const date = new Date(dob.date);
+//         $(".modal-info-container > img").attr('src', picture.thumbnail);
 //     }
-// }
-// xhr.open('GET', 'data/employees.json');
-// xhr.send();
+
+//     function prevResult() {
+
+//     }
+
+    const searchBar = `<form action="#" method="get">
+         <input type="search" id="search-input" class="search-input" placeholder="Search...">
+         <input type="submit" value="&#x1F50D;" id="sear ch-submit" class="search-submit">
+         </form>`;
+    $('.search-container').append(searchBar);
+});
