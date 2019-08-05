@@ -45,6 +45,7 @@ $(document).ready(function () {
         const card = $(e.target).closest('.card');
         const userNumber = parseInt(card.attr('usernumber'));
         const user = randomUsers.results[userNumber];
+        console.log(user);
         //Destructurting trick again...
         const {
             picture,
@@ -94,28 +95,37 @@ $(document).ready(function () {
     }
 
     //EXTRA CREDIT
-    // function nextResult() {
-    //     const userNumber = (parseInt($(".modal").attr('usernumber')) + 1) % 12;
-    //     const user = randomUsers.results[userNumber]; //gets us the array result for the user clicked.
-    //     const {
-    //         picture,
-    //         name,
-    //         email,
-    //         location,
-    //         phone,
-    //         cell,
-    //         dob
-    //     } = user; //destructuring assignment
-    //     const date = new Date(dob.date);
-    //     $('.modal-info-container > img').attr('src', picture.thumbnail);
-    //     $("#name").attr('src', name.first, name.last); //name
-    //     $('p.modal-text:eq(2)').attr(email);//email
-    //     $('.modal-text cap').attr(location.street, location.city, location.state, location.zip); //location
-    //     $('p.modal-text:contains(Phone:').attr(phone);//phone
-    //     $('p.modal-text:contains(Cell:)').attr(cell); //cell
-    //     $('p.modal-text:contains(Birthday:').attr(dob.date);//dob
+    function nextResult() {
+        const userNumber = (parseInt($(".modal").attr('usernumber')) + 1) % 12;
+        const user = randomUsers.results[userNumber]; //gets us the array result for the user clicked.
+        const {
+            picture,
+            name,
+            email,
+            location,
+            phone,
+            cell,
+            dob
+        } = user; //destructuring assignment
+        const date = new Date(dob.date);
+        console.log(user);
+        console.log(picture);
+        console.log(name);
+        console.log(email);
+        console.log(location);
+        console.log(phone);
+        console.log(cell);
+        console.log(dob);
 
-    // }
+        $('.modal-info-container > img').attr('src', picture.thumbnail);
+        // $("#name").attr('src', name.first, name.last); //name
+        // $('p.modal-text:eq(2)').attr(email);//email
+        // $('.modal-text cap').attr(location.street, location.city, location.state, location.zip); //location
+        // $('p.modal-text:contains(Phone:').attr(phone);//phone
+        // $('p.modal-text:contains(Cell:)').attr(cell); //cell
+        // $('p.modal-text:contains(Birthday:').attr(dob.date);//dob
+
+    }
 
     //     function prevResult() {
     //         const userNumber = (parseInt($(".modal").attr('usernumber')) - 1) % 12;
