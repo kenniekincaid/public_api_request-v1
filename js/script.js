@@ -34,7 +34,7 @@ $(document).ready(function () {
             $('.gallery').append(cardArray);
         }
     };
-    xhr.open('GET', 'https://randomuser.me/api/?results=12');
+    xhr.open('GET', 'https://randomuser.me/api/?results=12&nat=us,au,br,fr,nz');
     xhr.send();
 
     /**
@@ -57,7 +57,7 @@ $(document).ready(function () {
         } = user;
         const date = new Date(dob.date);
         const modal = `<div class="modal-container">
-                <div class="modal" usernumber="${userNumber}">
+                <div id="usernumber" class="modal" usernumber="${userNumber}">
                     <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
                     <div id="userinfo" class="modal-info-container">
                         <img id="picture" class="modal-img" src="${picture.thumbnail}" alt="profile picture">
@@ -68,7 +68,7 @@ $(document).ready(function () {
                         <hr>
                         <p id="phone" class="modal-text">Phone: ${phone}</p>
                         <p id="cell" class="modal-text">Cell: ${cell !== undefined ? cell : ""}</p>
-                        <p id="birthday" class="modal-text">Birthday: ${date.getMonth()+1}/${date.getDay()}/${date.getFullYear()}</p>
+                        <p id="dob" class="modal-text">Birthday: ${date.getMonth()+1}/${date.getDay()}/${date.getFullYear()}</p>
                     </div>
                 </div>
                 <div class="modal-btn-container">
@@ -84,14 +84,106 @@ $(document).ready(function () {
         $('#modal-close-btn').on('click', () => {
             $('.modal-container').remove();
         });
+
+        //Was going to create code to allow users to exit modal by clicking the overlay black space.
+        // $.modal.defaults = {
+        //     clickClose = true,
+        // } 
+
+        //Setting up the prev and next buttons for extra credit.
+        $('#modal-prev').on('click', prevResult);
+        $('#modal-next').on('click', nextResult);
     }
 
+/*EXTRA CREDIT SECTION
     /**
-     * Search bar is just for aesthetics; not functional.
+     * MODAL NEXT BUTTON
+     */
+        function nextResult() {
+            const userNumber = (parseInt($(".modal").attr('usernumber')) + 1) % 12;
+            const user = randomUsers.results[userNumber]; //gets us the array result for the user clicked.
+            const {
+                picture,
+                name,
+                email,
+                location,
+                phone,
+                cell,
+                dob
+            } = user; //destructuring assignment
+
+            // console.log(user);
+            // console.log(user.name.first);
+            // console.log(user.location.city);
+
+            const date = new Date(dob.date);
+            $(".modal-info-container > img").attr('src', picture.thumbnail);
+            $('.modal-container #name').text(user.name.first + ' ' + user.name.last);
+            $('.modal-container #email').text(user.email);
+            $('.modal-container #location').text(user.location.street + ',' + user.location.city + "," + user.location.state + "" + user.location.zip);
+            $('.modal-container #phone').text(user.phone);
+            $('.modal-container #cell').text(user.cell);
+            $('.modal-container #dob').text(user.getMonth() + user.getDay() + user.getFullYear());
+        }
+
+    /**
+     * MODAL PREVIOUS BUTTON
+     */
+        function prevResult() {
+            const userNumber = (parseInt($(".modal").attr('usernumber')) - 1) % 12;
+            const user = randomUsers.results[userNumber]; //gets us the array result for the user clicked.
+            const {
+                picture,
+                name,
+                email,
+                location,
+                phone,
+                cell,
+                dob
+            } = user; //destructuring assignment
+            const date = new Date(dob.date);
+            $(".modal-info-container > img").attr('src', picture.thumbnail);
+            $('.modal-container #name').text(user.name.first + ' ' + user.name.last);
+            $('.modal-container #email').text(user.email);
+            $('.modal-container #location').text(user.location.street + ',' + user.location.city + "," + user.location.state + "" + user.location.zip);
+            $('.modal-container #phone').text(user.phone);
+            $('.modal-container #cell').text(user.cell);
+            $('.modal-container #dob').text(user.getMonth() + user.getDay() + user.getFullYear());
+        }
+
+    /**
+     * SEARCH BAR - Appended for aesthetics; non-functional.
      */
     const searchBar = `<form action="#" method="get">
-            <input type="search" id="search-input" class="search-input" placeholder="Search...">
-            <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
-            </form>`;
+        <input type="search" id="search-input" class="search-input" placeholder="Search...">
+        <input type="submit" value="&#x1F50D;" id="sear ch-submit" class="search-submit">
+        </form>`;
     $('.search-container').append(searchBar);
+
+    // function searchFunction() {
+    //     var input, filter, div, h3;
+    //     input = document.getElementById('search-input');
+    //     filter = input.value.toUpperCase();
+    //     div = document.getElementById('usercard');
+    //     h3 = div.getElementByTagName('h3').val();
+
+    //     for (i = 0; i < li.length; i++) {
+    //         if (h3.innerHTML.toUpperCase().indexOf(filter) > -1) {
+    //             if (input === h3) {
+    //                 div[i].style.display = "";
+    //             } else {
+    //                 div[i].style.display = 'none';
+    //             }
+    //         }
+    //     }
+    // }
+
+    /*Alterative code*/
+        // searchFunction();
+        // $("#myInput").on("keyup", function () {
+        //     var value = $(this).val().toLowerCase();
+        //     $("#myTable tr").filter(function () {
+        //         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        //     });
+        // });
 });
